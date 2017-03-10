@@ -61,19 +61,26 @@ oth_limits   = group_limits(:, find(group_value == 1));
 % split original signal in blocks having power above threshold
 if debug
   check_line = zeros(1, length(w));
+  power_line = zeros(1, length(w));
 end
-% oth_limits should have relatively few elements; no need for vectorized code
+% oth_limits should have few elements; no need for vectorized code
 for i = 1:size(oth_limits, 2)
-  b_start = (oth_limits(1, i) - 1) * pt + 1;
-  b_end   = oth_limits(2, i) * pt;
+  group_start = oth_limits(1, i);
+  group_end = oth_limits(2, i);
+  b_start = (group_start - 1) * pt + 1;
+  b_end   = group_end * pt;
   block   = w(b_start:b_end);
   % drop blocks that are too weak (signal is already normalized)
   if max(block) < peak_thresh
     continue
   end
+  power_block = p(group_start:group_end);
+  min_slots
+  [P, p_line] = get_pulses(block, power_block, pt, min_slots, p_thresh_factor * 2.5);
   if debug
     fprintf("isolated block [%d : %d] (len = %d samples)\n", b_start, b_end, length(block));
     check_line(b_start:b_end) = 1;
+    power_line(b_start:b_end) = p_line;
   end
   if length(block) > block_length
     % split in mutiple blocks
@@ -107,5 +114,25 @@ end
 if debug
   % check result visually
   t = 0:1/fs:(length(w)-1)/fs;
-  plot(t, w, 'b', t, check_line, 'r', 'linewidth', 2)
+  plot(t, w, 'b', t, check_line, 'r', 'linewidth', 2, t, power_line, 'c', 'linewidth', 2)
+end
+
+
+function [P, check_line] = get_pulses(block, power_block, power_slot_size, min_slots, pth)
+P = 0;
+check_line = zeros(1, length(block));
+
+avg_power = mean(power_block);
+over_thresh = power_block > (avg_power * pth);
+[group_count, group_value] = runlength(over_thresh);
+group_value(find(group_count < min_slots)) = 0;
+group_ends = cumsum(group_count);
+group_starts = [0 group_ends(1 : end - 1)] + 1;
+group_limits = [group_starts; group_ends];
+oth_limits   = group_limits(:, find(group_value == 1));
+
+for i = 1:size(oth_limits, 2)
+  g_start = oth_limits(1, i);
+  g_end = oth_limits(2, i);
+  check_line((g_start - 1) * power_slot_size + 1 : g_end * power_slot_size) = 1;
 end
