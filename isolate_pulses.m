@@ -34,6 +34,7 @@ p_thresh_factor = 0.1;         % threshold is 1/10 of total average power
 min_slots = min_pulse_len ... 
             / power_slot_size; % minimum consecutive power-slots above threshold
 peak_thresh = 0.5;             % threshold for pulse peak
+p_thresh_factor_pulse = 0.25;  % power threshold for detecting single pulses
           
 % calculate internal parameters
 pt = round(fs * power_slot_size);
@@ -76,7 +77,7 @@ for i = 1:size(oth_limits, 2)
   end
   power_block = p(group_start:group_end);
   min_slots
-  [P, p_line] = get_pulses(block, power_block, pt, min_slots, p_thresh_factor * 2.5);
+  [P, p_line] = get_pulses(block, power_block, pt, min_slots, p_thresh_factor_pulse);
   if debug
     fprintf("isolated block [%d : %d] (len = %d samples)\n", b_start, b_end, length(block));
     check_line(b_start:b_end) = 1;
