@@ -3,7 +3,7 @@ clear ; close all; clc
 wav_dir_yes = '../wavs_original/dog/';
 wav_dir_no = '../wavs_original/not_dog/';
 min_pulse_len = 0.1;
-max_pulse_len = 0.4;
+max_pulse_len = 0.3;
 fs = 8000;
 efs = 500;
 debug = 0;
