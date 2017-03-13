@@ -22,7 +22,7 @@ if debug
   for i = 1:size(oth_limits, 2)
     p_start = oth_limits(1, i);
     p_end = oth_limits(2, i);
-    check_line((p_start - 1) * power_slot_size + 1 : p_end * power_slot_size) = 1;
+    check_line((p_start - 1) * power_slot_size + 1 : p_end * power_slot_size) = 0.95;
   end
 end
 
