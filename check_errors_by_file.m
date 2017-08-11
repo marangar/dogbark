@@ -3,7 +3,7 @@ function check_errors_by_file(theta)
 wav_dir_yes = '../wavs_original/dog/';
 wav_dir_no = '../wavs_original/not_dog/';
 min_pulse_len = 0.1;
-max_pulse_len = 0.3;
+max_pulse_len = 0.45;
 fs = 8000;
 efs = 500;
 

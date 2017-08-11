@@ -3,7 +3,7 @@ clear ; close all; clc
 wav_dir_yes = '../wavs_original/dog/';
 wav_dir_no = '../wavs_original/not_dog/';
 min_pulse_len = 0.1;
-max_pulse_len = 0.3;
+max_pulse_len = 0.45;
 fs = 8000;
 efs = 500;
 debug = 0;
@@ -23,6 +23,9 @@ for i = 1:length(files)
                                fs, debug)];
 end
 fprintf('\n');
+if debug
+  k = waitforbuttonpress;
+end
 % collect pulses for non-dog-barks
 Wno = [];
 files = dir(strcat(wav_dir_no, '*.wav'));
@@ -38,6 +41,9 @@ for i = 1:length(files)
                              fs, debug)];
 end
 fprintf('\n');
+if debug
+  k = waitforbuttonpress;
+end
 % get features for dog barks
 fprintf('Get features for dog barks\n', wavf);
 Xyes = features_from_pulses(Wyes, fs, efs, debug);
