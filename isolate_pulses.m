@@ -34,7 +34,7 @@ p_thresh_factor = 0.1;         % threshold is 1/10 of total average power
 min_slots = min_pulse_len ... 
             / power_slot_size; % minimum consecutive power-slots above threshold
 peak_thresh = 0.5;             % threshold for pulse peak
-p_thresh_factor_pulse = 0.25;  % pow-threshold factor for detecting single pulses
+p_thresh_factor_pulse = 0.5;   % pow-threshold factor for detecting single pulses
           
 % calculate internal parameters
 pt = round(fs * power_slot_size);
@@ -76,7 +76,6 @@ for i = 1:size(oth_limits, 2)
     continue
   end
   power_block = p(group_start:group_end);
-  min_slots
   [P, p_line] = isolate_pulses_from_block(block, power_block, pt, ...
                                           max_pulse_len / power_slot_size, ...
                                           min_slots, p_thresh_factor_pulse, ...
@@ -86,34 +85,7 @@ for i = 1:size(oth_limits, 2)
     check_line(b_start:b_end) = 1;
     power_line(b_start:b_end) = p_line;
   end
-  if length(block) > block_length
-    % split in mutiple blocks
-    num_full_blocks = idivide(length(block), block_length);
-    remnant = mod(length(block), block_length) != 0;
-    for j = 1:num_full_blocks
-      full_block = block(((j - 1) * block_length + 1) : j * block_length);
-      W = [W ; full_block];
-    end
-    if remnant
-      partial_block = block(num_full_blocks * block_length + 1 : end);
-      % drop partial_block shorter than min_pulse_len
-      if length(partial_block) > min_pulse_len * fs
-        partial_block = [partial_block repmat(0, 1, block_length - length(partial_block))];
-        W = [W ; partial_block];
-      else
-        remnant = 0;
-      end
-    end
-    if debug
-      fprintf("   split block in (%d+%d) parts\n", num_full_blocks, remnant);
-    end
-  elseif length(block) < block_length
-    % pad with zeros at the end
-    block = [block repmat(0, 1, block_length - length(block))];
-    W = [W ; block];
-  else
-    W = [W ; block];
-  end
+  W = [W; P];
 end
 if debug
   % check result visually
