@@ -32,13 +32,20 @@ end
 pulse_sizes = diff([0 valley_pos*power_slot_size length(block)]);
 % separate pulses
 pulse_cells = mat2cell(block, 1, pulse_sizes);
-for pc = 1 : length(pulse_cells)
-  pulse = cell2mat(pulse_cells(1, pc));
-  pulses = [pulses ; normalize_pulse(pulse, max_pulse_slots * power_slot_size)];
-end
 if debug == 1
   check_line([1 valley_pos*power_slot_size length(block)]) = 0;
 end
+for pc = 1 : length(pulse_cells)
+  pulse = cell2mat(pulse_cells(1, pc));
+  if length(pulse) < min_pulse_slots * power_slot_size
+    if debug
+      check_line(ismember(block, pulse)) = 0
+    end
+    continue
+  end
+  pulses = [pulses ; normalize_pulse(pulse, max_pulse_slots * power_slot_size)];
+end
+
 
 end
 
