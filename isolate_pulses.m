@@ -12,7 +12,7 @@ W = [];
 
 % check and read input wav
 try
-  [w, fs, nbits] = wavread(wav_file);
+  [w, fs] = audioread(wav_file);
   w = w';
 catch
   fprintf("Error in wav read\n");
