@@ -76,5 +76,6 @@ elseif strcmp(algo, 'svm')
 end
 fprintf('Train accuracy:            %f (%d/%d)\n', tr_acc, tr_match, tr_tot);
 fprintf('Test accuracy:             %f (%d/%d)\n', te_acc, te_match, te_tot);
+fprintf('Total errors:              %d\n', (tr_tot-tr_match) + (te_tot-te_match));
 
 end
