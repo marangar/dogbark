@@ -7,9 +7,11 @@ oldpoi = page_output_immediately(1);
 
 W = isolate_pulses(fname, min_pulse_len, max_pulse_len, fs, dbg);
 X = features_from_pulses(W, fs, efs, 0);
-if algo == 'lr'
+if strcmp(algo, 'lr')
   X = [ones(size(X, 1), 1) X];
   p = log_reg_predict(algo_params, X);
+elseif strcmp(algo, 'svm')
+  p = svm_predict(algo_params, X);
 end
 
 PAGER(oldpager);
