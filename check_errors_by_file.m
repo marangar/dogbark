@@ -1,4 +1,4 @@
-function check_errors_by_file(theta)
+function check_errors_by_file(algo, algo_params)
 
 wav_dir_yes = '../wavs_original/dog/';
 wav_dir_no = '../wavs_original/not_dog/';
@@ -12,7 +12,7 @@ fflush(stdout);
 files = dir(strcat(wav_dir_yes, '*.wav'));
 for i = 1:length(files)
   wavf = strcat(wav_dir_yes, files(i).name);
-  predict_from_file(wavf, theta, 1, ...
+  predict_from_file(wavf, algo, algo_params, 1, ...
                     min_pulse_len, max_pulse_len, fs, efs, 0);
 end
 fprintf('\n\n');
@@ -21,7 +21,7 @@ fflush(stdout);
 files = dir(strcat(wav_dir_no, '*.wav'));
 for i = 1:length(files)
   wavf = strcat(wav_dir_no, files(i).name);
-  predict_from_file(wavf, theta, 0, ...
+  predict_from_file(wavf, algo, algo_params, 0, ...
                     min_pulse_len, max_pulse_len, fs, efs, 0);
 end
 fprintf('\n');

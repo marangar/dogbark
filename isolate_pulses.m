@@ -1,7 +1,7 @@
 function W = isolate_pulses(wav_file, min_pulse_len, max_pulse_len, ...
                             target_fs, debug)
 
-if nargin < 4
+if nargin < 5
   debug = 0;
 end
 
