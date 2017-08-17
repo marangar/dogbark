@@ -55,20 +55,26 @@ X = [Xyes; Xno];
 y = [ones(size(Xyes, 1), 1); zeros(size(Xno, 1), 1)];
 clear -x X y
 [m, n] = size(X);
-% shuffle rows of X and y
-rand_rows = randperm(m);
-X = X(rand_rows, :);
-y = y(rand_rows);
 % add intercept term to X
 X = [ones(m, 1) X];
-% split data in train-set and test-set
-border = round(2/3*m);
-Xtrain = X(1:border, :);
-ytrain = y(1:border, :);
-Xtest = X(border + 1:end, :);
-ytest = y(border + 1:end, :);
+% split data in train-set (2/3) and test-set (1/3)
+Xtrain = X(1:3:end, :);
+Xtrain = [Xtrain ; X(2:3:end, :)];
+ytrain = y(1:3:end, :);
+ytrain = [ytrain ; y(2:3:end, :)];
+Xtest = X(3:3:end, :);
+ytest = y(3:3:end, :);
+% get set sizes
 mtrain = size(Xtrain, 1);
 mtest = size(Xtest, 1);
+% shuffle train set
+rand_rows = randperm(mtrain);
+Xtrain = Xtrain(rand_rows, :);
+ytrain = ytrain(rand_rows);
+% shuffle test set
+rand_rows = randperm(mtest);
+Xtest = Xtest(rand_rows, :);
+ytest = ytest(rand_rows);
 % clean memory
 clear X 
 clear y 
