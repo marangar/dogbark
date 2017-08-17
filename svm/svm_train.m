@@ -1,7 +1,7 @@
 function [cost_train, cost_test, model] = svm_train(C, ...
                                                     Xtrain, ytrain, ...
-                                                    Xtest, ytest) 
-opt = sprintf('-c %d', C);
+                                                    Xtest, ytest)
+opt = sprintf('-c %d -t 2 -g 0.01', C);
 
 output = evalc('model = svmtrain(ytrain, Xtrain, opt);');
 r = regexp(output, 'obj = (\-*[0-9]+\.[0-9]+),', 'tokens');
