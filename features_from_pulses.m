@@ -34,7 +34,7 @@ for i = 1:size(W, 1)
   % normalize amplitude
   w = w * 1/max(w);
   % first half of features is time domain envelope (downsampled of a factor r)
-  X(i, 1:nt) = envelope(w, r);
+  X(i, 1:nt) = fastsmooth(envelope(w, r), 5);
   if (debug)
     figure
     subplot(2,1,1) 
