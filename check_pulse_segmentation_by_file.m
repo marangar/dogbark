@@ -1,13 +1,15 @@
 function check_pulse_segmentation_by_file(debug)
 
-wav_dir_yes = '../wavs_original/dog/';
-wav_dir_no = '../wavs_original/not_dog/';
-min_pulse_len = 0.1;
-max_pulse_len = 0.45;
-fs = 8000;
-efs = 500;
+close all;
+conf = get_config();
 
-close all
+wav_dir_yes = conf.wav_dir_yes;
+wav_dir_no = conf.wav_dir_no;
+min_pulse_len = conf.min_pulse_len;
+max_pulse_len = conf.max_pulse_len;
+fs = conf.fs;
+efs = conf.efs;
+
 files = dir(strcat(wav_dir_yes, '*.wav'));
 for i = 1:length(files)
   wavf = strcat(wav_dir_yes, files(i).name);

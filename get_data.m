@@ -1,11 +1,13 @@
 clear ; close all; clc
 
-wav_dir_yes = '../wavs_original/dog/';
-wav_dir_no = '../wavs_original/not_dog/';
-min_pulse_len = 0.1;
-max_pulse_len = 0.45;
-fs = 8000;
-efs = 500;
+conf = get_config();
+
+wav_dir_yes = conf.wav_dir_yes;
+wav_dir_no = conf.wav_dir_no;
+min_pulse_len = conf.min_pulse_len;
+max_pulse_len = conf.max_pulse_len;
+fs = conf.fs;
+efs = conf.efs;
 debug = 0;
 
 % collect pulses for dog-barks
