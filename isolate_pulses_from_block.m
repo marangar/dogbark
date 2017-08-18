@@ -6,7 +6,7 @@ function [pulses, check_line] = isolate_pulses_from_block(block, ...
                                                           debug)
 % return values
 pulses = [];
-check_line = ones(1, length(block)) * 0.95;
+check_line = zeros(1, length(block));
 % internal variables
 window_size = min_pulse_slots;
 
@@ -35,17 +35,18 @@ valley_pos = valley_pos(find(valley_pos >= 0));
 pulse_sizes = diff([0 valley_pos*power_slot_size length(block)]);
 % separate pulses
 pulse_cells = mat2cell(block, 1, pulse_sizes);
-if debug == 1
-  check_line([1 valley_pos*power_slot_size length(block)]) = 0;
+if debug
+  pulse_offsets = [1 cumsum(pulse_sizes)];
 end
-for pc = 1 : length(pulse_cells)
-  pulse = cell2mat(pulse_cells(1, pc));
+for idx = 1 : length(pulse_sizes)
+  pulse = cell2mat(pulse_cells(1, idx));
+  pulse_size = pulse_sizes(idx);
   % drop pulses that are below minimum length
   if length(pulse) < min_pulse_slots * power_slot_size
-    if debug
-      check_line(ismember(block, pulse)) = 0;
-    end
     continue
+  end
+  if debug
+    check_line(pulse_offsets(idx)+1:pulse_offsets(idx+1)-1) = 0.95;
   end
   % add pulse to list
   pulses = [pulses ; normalize_pulse(pulse, max_pulse_slots * power_slot_size)];
