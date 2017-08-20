@@ -1,3 +1,3 @@
 clear ; close all; clc
 
-m = train('lr', 'data.bin');
+[mod, norm_params] = train('lr', 'data.bin');

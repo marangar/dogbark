@@ -31,8 +31,6 @@ for i = 1:size(W, 1)
   w = W(i, :);
   % ignore negative values
   w(find(w < 0)) = 0;
-  % normalize amplitude
-  w = w * 1/max(w);
   % first half of features is time domain envelope (downsampled of a factor r)
   X(i, 1:nt) = fastsmooth(envelope(w, r), 5);
   if (debug)
@@ -42,8 +40,6 @@ for i = 1:size(W, 1)
   end
   % get spectrum of current pulse
   ws = WS(i, :);
-  % normalize amplitude
-  ws = ws * 1/max(ws);
   % second half of features is frequency domain envelope (downsampled of a factor r)
   X(i, nt+1:end) = envelope(ws, r/2);
   if (debug)

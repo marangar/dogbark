@@ -1,4 +1,4 @@
-function [model] = train(algo, datafile)
+function [model, norm_params] = train(algo, datafile)
 
 load(datafile)
 

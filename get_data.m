@@ -55,7 +55,9 @@ Xno = features_from_pulses(Wno, fs, efs, debug);
 % compose X and y
 X = [Xyes; Xno];
 y = [ones(size(Xyes, 1), 1); zeros(size(Xno, 1), 1)];
-clear -x X y
+% normalize and scale
+[X, norm_params] = feat_norm_n_scale(X);
+clear -x X y norm_params
 [m, n] = size(X);
 % add intercept term to X
 X = [ones(m, 1) X];

@@ -1,3 +1,3 @@
 clear ; close all; clc
 
-m = train('svm', 'data.bin');
+[mod, norm_params] = train('svm', 'data.bin');

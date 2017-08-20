@@ -1,5 +1,6 @@
-function [W, X, p] = predict_from_file(fname, algo, algo_params, is_dog, ...
-                                       min_pulse_len, max_pulse_len, fs, efs, dbg)
+function [W, X, p] = predict_from_file(fname, algo, algo_params, norm_params, ...
+                                       is_dog, min_pulse_len, max_pulse_len, ...
+                                       fs, efs, dbg)
 
 gen_err = 0;
 
@@ -10,6 +11,7 @@ oldpoi = page_output_immediately(1);
 try
   W = isolate_pulses(fname, min_pulse_len, max_pulse_len, fs, dbg);
   X = features_from_pulses(W, fs, efs, 0);
+  X = feat_norm_n_scale(X, norm_params);
   if strcmp(algo, 'lr')
     X = [ones(size(X, 1), 1) X];
     p = log_reg_predict(algo_params, X);
