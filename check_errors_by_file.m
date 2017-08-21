@@ -4,18 +4,14 @@ conf = get_config();
 
 wav_dir_yes = conf.wav_dir_yes;
 wav_dir_no = conf.wav_dir_no;
-min_pulse_len = conf.min_pulse_len;
-max_pulse_len = conf.max_pulse_len;
-fs = conf.fs;
-efs = conf.efs;
+debug = 0;
 
 fprintf('Errors for dog barks:\n\n');
 fflush(stdout);
 files = dir(strcat(wav_dir_yes, '*.wav'));
 for i = 1:length(files)
   wavf = strcat(wav_dir_yes, files(i).name);
-  predict_from_file(wavf, algo, algo_params, norm_params, 1, ...
-                    min_pulse_len, max_pulse_len, fs, efs, 0);
+  predict_from_file(wavf, algo, algo_params, norm_params, 1, debug);
 end
 fprintf('\n\n');
 fprintf('Errors for non-dog barks:\n\n');
@@ -23,8 +19,7 @@ fflush(stdout);
 files = dir(strcat(wav_dir_no, '*.wav'));
 for i = 1:length(files)
   wavf = strcat(wav_dir_no, files(i).name);
-  predict_from_file(wavf, algo, algo_params, norm_params, 0, ...
-                    min_pulse_len, max_pulse_len, fs, efs, 0);
+  predict_from_file(wavf, algo, algo_params, norm_params, 0, debug);
 end
 fprintf('\n');
 fflush(stdout);

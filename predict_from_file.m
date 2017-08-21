@@ -1,8 +1,13 @@
-function [W, X, p] = predict_from_file(fname, algo, algo_params, norm_params, ...
-                                       is_dog, min_pulse_len, max_pulse_len, ...
-                                       fs, efs, dbg)
+function [W, X, p] = predict_from_file(fname, algo, algo_params, ...
+                                       norm_params, is_dog, dbg)
 
 gen_err = 0;
+
+conf = get_config();
+min_pulse_len = conf.min_pulse_len;
+max_pulse_len = conf.max_pulse_len;
+fs = conf.fs;
+efs = conf.efs;
 
 oldpager = PAGER('less > /dev/null');
 oldpso = page_screen_output(1);
