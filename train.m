@@ -14,6 +14,11 @@ elseif strcmp(algo, 'svm')
   % exclude intercept term
   Xtrain = Xtrain(:, 2:end);
   Xtest = Xtest(:, 2:end);
+elseif strcmp(algo, 'nn')
+  addpath('nn')
+  % exclude intercept term
+  Xtrain = Xtrain(:, 2:end);
+  Xtest = Xtest(:, 2:end);
 end
 
 possible_lambdas = [0 0.01 0.02 0.03 0.04 0.05 ...
@@ -40,6 +45,11 @@ for lambda_idx = 1:length(possible_lambdas)
     [cost_train, cost_test, algo_params] = svm_train(C, ...
                                                      Xtrain, ytrain, ...
                                                      Xtest, ytest);
+  elseif strcmp(algo, 'nn')
+    fprintf('training with lambda %d\r', lambda);
+    [cost_train, cost_test, algo_params] = nn_train(lambda, ...
+                                                    Xtrain, ytrain, ...
+                                                    Xtest, ytest);
   end
   fflush(stdout);
   % store costs
@@ -50,9 +60,11 @@ for lambda_idx = 1:length(possible_lambdas)
 end
 fprintf('Training done                                   \r');
 fprintf('\n\n');
+
 % find lambda corresponding to min cost
 [min_cost_test, min_cost_test_idx] = min(Jtest);
 bl = possible_lambdas(min_cost_test_idx);
+
 % predict based on algorithm
 if strcmp(algo, 'lr')
   %plot(possible_lambdas, Jtrain, '-or', possible_lambdas, Jtest, '-og')
@@ -73,7 +85,16 @@ elseif strcmp(algo, 'svm')
   model = Models(min_cost_test_idx).data;
   [tr_acc, tr_match, tr_tot] = svm_get_acc(model, Xtrain, ytrain);
   [te_acc, te_match, te_tot] = svm_get_acc(model, Xtest, ytest);
+elseif strcmp(algo, 'nn')
+  %plot(possible_lambdas, Jtrain, '-or', possible_lambdas, Jtest, '-og')
+  fprintf('Best lambda:               %d\n', bl);
+  fprintf('Train cost at best lambda: %d\n', Jtrain(min_cost_test_idx));
+  fprintf('Test cost at best lambda:  %d\n', Jtest(min_cost_test_idx));
+  model = Models(min_cost_test_idx).data;
+  [tr_acc, tr_match, tr_tot] = nn_get_acc(model, Xtrain, ytrain);
+  [te_acc, te_match, te_tot] = nn_get_acc(model, Xtest, ytest);
 end
+
 fprintf('Train accuracy:            %f (%d/%d)\n', tr_acc, tr_match, tr_tot);
 fprintf('Test accuracy:             %f (%d/%d)\n', te_acc, te_match, te_tot);
 fprintf('Total errors:              %d\n', (tr_tot-tr_match) + (te_tot-te_match));

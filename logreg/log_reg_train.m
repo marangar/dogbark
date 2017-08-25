@@ -3,8 +3,6 @@ function [cost_train, cost_test, theta] = log_reg_train(lambda, ...
                                                         Xtest, ytest)
   % initialize fitting parameters
   initial_theta = zeros(size(Xtrain, 2), 1);
-  % compute initial cost and gradient
-  [cost, grad] = log_reg_cost(initial_theta, Xtrain, ytrain, lambda);
   % set options for fminunc
   options = optimset('GradObj', 'on', 'MaxIter', 400);
   %  minimize cost function

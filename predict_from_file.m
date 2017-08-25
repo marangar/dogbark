@@ -22,6 +22,8 @@ try
     p = log_reg_predict(algo_params, X);
   elseif strcmp(algo, 'svm')
     p = svm_predict(algo_params, X);
+  elseif strcmp(algo, 'nn')
+    p = nn_predict(algo_params, X);
   end
 catch
   gen_err = 1;
