@@ -1,8 +1,8 @@
-function [cost_train, cost_test, theta] = log_reg_train(lambda, n, ...
+function [cost_train, cost_test, theta] = log_reg_train(lambda, ...
                                                         Xtrain, ytrain, ...
-                                                        Xtest, ytest) 
+                                                        Xtest, ytest)
   % initialize fitting parameters
-  initial_theta = zeros(n + 1, 1);
+  initial_theta = zeros(size(Xtrain, 2), 1);
   % compute initial cost and gradient
   [cost, grad] = log_reg_cost(initial_theta, Xtrain, ytrain, lambda);
   % set options for fminunc
