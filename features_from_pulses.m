@@ -1,7 +1,10 @@
-function X = features_from_pulses(W, fs, env_fs, debug)
+function X = features_from_pulses(W, fs, env_fs, debug, silent)
 
-if nargin < 3
+if nargin < 4
   debug = 0;
+end
+if nargin < 5
+  silent = 0;
 end
 
 % ratio between signal-fs and envelope-fs
@@ -25,7 +28,9 @@ WS = abs(fft(W, [], 2));
 WS = WS(:, 1:size(WS, 2)/2);
 % calculate time-domain envelope
 for i = 1:size(W, 1)
-  fprintf(' features_from_pulses: %d/%d\r', i, size(W, 1));
+  if silent == 0
+    fprintf(' features_from_pulses: %d/%d\r', i, size(W, 1));
+  endif
   fflush(stdout);
   % get one pulse
   w = W(i, :);
@@ -47,4 +52,6 @@ for i = 1:size(W, 1)
     plot(ws, 'b', 1:r/2:length(ws), X(i, nt+1:end), '-om', 'linewidth', 2)
   end
 end
-fprintf('\n');
+if silent == 0
+  fprintf('\n');
+endif

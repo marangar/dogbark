@@ -20,7 +20,7 @@ function [Xn, norm_params] = feat_norm_n_scale(X, norm_params)
     h = max(abs(Xn));
     h(find(h == 0)) = 1e-6;
   else
-    h = norm_params.h
+    h = norm_params.h;
   end
   % scale to [-1 1]
   Xn = Xn ./ repmat(h, m, 1);

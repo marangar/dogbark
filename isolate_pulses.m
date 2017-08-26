@@ -15,7 +15,7 @@ try
   [w, fs] = audioread(wav_file);
   if size(w, 2) == 2
     % convert to mono
-    w = (w(:, 1) + w(:, 2)) / 2
+    w = (w(:, 1) + w(:, 2)) / 2;
   endif
   w = w';
 catch
