@@ -42,9 +42,9 @@ end
 
 fflush(stdout);
 if is_dog
-  fprintf('%-50s: errors: %d\n', fname, length(find(p == 0)));
+  fprintf('%-65s: errors: %d\n', fname, length(find(p == 0)));
 else
-  fprintf('%-50s: errors: %d\n', fname, length(find(p == 1)));
+  fprintf('%-65s: errors: %d\n', fname, length(find(p == 1)));
 end
 fflush(stdout);
 
