@@ -16,18 +16,18 @@ W_end = floor(size(W, 2) / r) * r;
 W = W(:, 1:W_end);
 % time-domain features length
 nt = size(W, 2) / r;
-% frequency-domain features length
+% frequency amplitude features length
 nf = nt;
-% autocorrelation of frequency-domain features length
-nfx = nf;
+% frequency phase features length
+np = nf;
 
 %
 % output variables
 %
-X = zeros(size(W, 1), nt + nf + nfx);
+X = zeros(size(W, 1), nt + nf + np);
 
 % calculate fft for every row
-WS = abs(fft(W, [], 2));
+WS = fft(W, [], 2);
 % ignore what is after nyquist
 WS = WS(:, 1:size(WS, 2)/2);
 % calculate time-domain envelope
@@ -47,21 +47,23 @@ for i = 1:size(W, 1)
     subplot(3,1,1)
     plot(w, 'b', 1:r:length(w), X(i, 1:nt), '-or', 'linewidth', 2)
   end
-  % get spectrum of current pulse
-  ws = WS(i, :);
-  % second part of features is frequency domain envelope (downsampled of a factor r)
+  % get amplitude spectrum of current pulse
+  ws = abs(WS(i, :));
+  % second part of features is frequency amplitude envelope (downsampled)
   wse = envelope(ws, r/2);
   X(i, nt+1:nt+nf) = wse;
   if (debug)
     subplot(3,1,2)
     plot(ws, 'b', 1:r/2:length(ws), X(i, nt+1:nt+nf), '-om', 'linewidth', 2)
   end
-  % third part of features is xcorr of frequency domain envelope
-  xwse = xcorr(wse);
-  X(i, nt+nf+1:end) = xwse(nfx:end);
+  % get phase spectrum of current pulse
+  pws = unwrap(angle(WS(i, :)));
+  % third part of features is frequency phase downsampled
+  pwse = pws(1:r/2:end);
+  X(i, nt+nf+1:end) = pwse;
   if (debug)
     subplot(3,1,3)
-    plot(X(i, nt+nf+1:end), '-oc', 'linewidth', 2)
+    plot(pws, 'b', 1:r/2:length(ws), X(i, nt+nf+1:end), '-oc', 'linewidth', 2)
   end
 end
 if silent == 0

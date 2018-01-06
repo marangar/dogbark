@@ -15,7 +15,7 @@ oldpoi = page_output_immediately(1);
 
 try
   W = isolate_pulses(fname, min_pulse_len, max_pulse_len, fs, dbg);
-  X = features_from_pulses(W, fs, efs, 0);
+  X = features_from_pulses(W, fs, efs, dbg);
   X = feat_norm_n_scale(X, norm_params);
   if strcmp(algo, 'lr')
     X = [ones(size(X, 1), 1) X];
