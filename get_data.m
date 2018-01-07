@@ -47,10 +47,10 @@ if debug
   k = waitforbuttonpress;
 end
 % get features for dog barks
-fprintf('Get features for dog barks\n', wavf);
+fprintf('Get features for dog barks\n');
 Xyes = features_from_pulses(Wyes, fs, efs, debug);
 % get features for non-dog barks
-fprintf('Get features for non-dog barks\n', wavf);
+fprintf('Get features for non-dog barks\n');
 Xno = features_from_pulses(Wno, fs, efs, debug);
 % compose X and y
 X = [Xyes; Xno];
