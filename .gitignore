@@ -2,4 +2,8 @@ data.bin
 data.bin.*
 memo*.txt
 memo
-libsvm
+libsvm/*
+!libsvm/matlab
+!libsvm/COPYRIGHT
+*.o
+*.mex
