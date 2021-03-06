@@ -34,16 +34,16 @@ sum(p==1)
 ## How it works
 Classification algorithms are basic/3rd-party implementations of support-vector machine, logistic regression and neural networks.<br>
 Most of the effort is about extracting features from data wav files: each wav file is divided in 'pulses' and spectrum of each pulse is calculated with FFT. The envelope of amplitude and phase spectrum is used as the feature set.<br><br>
-If training data is clean (i.e. dog wav files contain only dog barks, and not-dog wav files contain only non-dog-bark sounds) accuracy can be high with a relatively small dataset. For example, this dataset has 60 wav files for dog-barks and 38 wav files for non-dog-bark sounds, having less than 300KB average size:
+If training data is clean (i.e. dog wav files contain only dog barks, and not-dog wav files contain only non-dog-bark sounds) accuracy can be high with a relatively small dataset. For example, [this dataset](https://www.kaggle.com/marangar/dogbark) has 60 wav files for dog-barks and 38 wav files for non-dog-bark sounds, having less than 300KB average size:
 ```
-ls /data/MLData/wavs_original/dog/*.wav | wc -l
+$ ls /data/MLData/wavs_original/dog/*.wav | wc -l
 60
-ls -l /data/MLData/wavs_original/dog/*.wav | awk '{sum += $5; n++;} END {print sum/n;}'
+$ ls -l /data/MLData/wavs_original/dog/*.wav | awk '{sum += $5; n++;} END {print sum/n;}'
 288805
 
-ls /data/MLData/wavs_original/not_dog/*.wav | wc -l
+$ ls /data/MLData/wavs_original/not_dog/*.wav | wc -l
 38
-ls -l /data/MLData/wavs_original/not_dog/*.wav | awk '{sum += $5; n++;} END {print sum/n;}'
+$ ls -l /data/MLData/wavs_original/not_dog/*.wav | awk '{sum += $5; n++;} END {print sum/n;}'
 235392
 ```
 Accuracy after training is 98.82%:
