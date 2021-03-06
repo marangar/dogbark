@@ -7,3 +7,4 @@ libsvm/*
 !libsvm/COPYRIGHT
 *.o
 *.mex
+.token
